@@ -1,0 +1,9 @@
+* Event time is time embedded in the data itself. Each event from the devices is the row in the table and event time is 
+ a column value in the table.This can be used as window aggregation . Therefore such window based aggregation based query
+ can be defined consistently on the both sides od static datasets and datastream.
+ 
+ * Since spark 2.1 , it will support for watermarking which allows the user to specify the threshold of the late data, and allows
+ the engine to accordingly clean up the old state.
+ 
+ * In structured streaming , delivering end to end exactly once semantics was one key goals behind the design of Structured streaming.
+ 
