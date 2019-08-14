@@ -1,0 +1,12 @@
+* Structured streaming is the scalable and fault tolerant stream processing engine built on top of apache spark sql engine.
+The spark SQL engine will take care of running it incrementally and continuosly and updating the final results as streaming data continues 
+to  arrive.
+
+* Structured streaming provides fast, scalable,fault-tolerant , end to end exactly one stream processing without the user having about 
+streaming.
+
+* Internally by default, Structured streaming queries are procesed uisng micro-batch processing engine, which process the data
+in small batches . 
+
+* Since spark 2.3 , a new low latency processing mode called Continuos processing , which can achieved end-to-end latency as  1 ms with
+alteast once gruanteed.
