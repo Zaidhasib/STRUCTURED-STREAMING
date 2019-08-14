@@ -1,0 +1,34 @@
+//Text data is recieved from TCP socket
+
+
+scala> import org.apache.spark.sql.functions._
+import org.apache.spark.sql.functions._
+
+scala> import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.SparkSession
+
+
+scala> val sc = SparkSession.builder.appName("wordcountstreaming").getOrCreate()
+19/08/14 05:42:16 WARN org.apache.spark.sql.SparkSession$Builder: Using an existing SparkSession; some configuration may not take effect.
+sc: org.apache.spark.sql.SparkSession = org.apache.spark.sql.SparkSession@4e481512
+
+scala> import spark.implicits._
+import spark.implicits._
+
+scala> val lines = sc.readStream.format("socket").option("host","localhost").option("port",9999).load()
+19/08/14 05:46:29 WARN org.apache.spark.sql.execution.streaming.TextSocketSourceProvider: The socket source should 
+not be used for production applications! It does not support recovery.
+ivysettings.xml file not found in HIVE_HOME or HIVE_CONF_DIR,/etc/hive/conf.dist/ivysettings.xml will be used
+lines: org.apache.spark.sql.DataFrame = [value: string]
+
+
+scala> val words = lines.as[String].flatMap(_.split(" "))
+words: org.apache.spark.sql.Dataset[String] = [value: string]
+
+
+scala> val wordscount  = words.groupBy("value").count()
+wordscount: org.apache.spark.sql.DataFrame = [value: string, count: bigint]
+
+
+scala> val query = wordscount.writeStream.outputMode("complete").format("console").start()
+query: org.apache.spark.sql.streaming.StreamingQuery = org.apache.spark.sql.execution.streaming.StreamingQueryWrapper@4c6a5712
