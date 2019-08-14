@@ -1,0 +1,22 @@
+* Consider the input data stream as "Input table". Every data item that is arriving on the stream is like a new row being appended 
+to the input table.
+
+A query in the input will generate the "Result Table". Every trigger interval (eg:! sec) new rows get appended to the input table which 
+eventually updates the result table . Whenever the resul table gets updated , we would want to write the changed result row to an external sinks.
+
+* The output is defined whats gets written out to external storage.Different modes are:
+
+i) "Complete Mode":- The entire updated result table will be written to the external storage. It is upto storage connector to decide how to 
+handle writing of the entire tables.
+
+ii) "Append Mode" :- Only the new rows appended in the result table since the last triger will be written to the external storage. This is 
+applicable only on the queries where existing rows in the result table are not expected to channge.
+
+iii)"Update" :- Only the rows that were updated in the result table since the last trigger will be written to the external storage. If the query 
+doesn't contains aggregations . it will be equivalent to the append mode.
+
+* Spark will continuosly check the new data from the socket connection (in case of socket). If there is a new data , Spark will run incremental
+query that combines the previous running counts will the new data.
+
+* In structured streaming , spark is responsible for updating the result table , when there is a new data , thus relieving the user from resoning 
+about it.
